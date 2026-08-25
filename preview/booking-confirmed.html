@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Booking confirmation at Lumière Hair & Spa."
+    />
+    <title>Booking Confirmed — Lumière Hair & Spa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="nav container" aria-label="Main navigation">
+        <a class="brand" href="../index.html" aria-label="Lumière home">
+          <span class="brand-mark">L</span> Lumière
+        </a>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+          <a href="services.html">Services</a>
+          <a href="stylists.html">Stylists</a>
+          <a href="../index.html#story">Our story</a>
+          <a href="../index.html#contact">Contact</a>
+          <a class="btn btn-primary" href="booking-flow.html">Book now</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="app-main">
+      <section class="section" style="padding-top: 140px; padding-bottom: 120px;">
+        <div class="container">
+          <div class="confirmed-card">
+            <div class="success-icon">✓</div>
+            <p class="eyebrow">Reservation Confirmed</p>
+            <h1 class="page-title" style="margin-bottom: 8px;">We're looking forward to welcoming you!</h1>
+            <p class="page-subtitle" style="margin-inline: auto;">
+              An SMS confirmation &amp; reminder has been queued for your appointment.
+            </p>
+
+            <div class="ticket-summary" id="confirmed-details">
+              <div class="ticket-row">
+                <span class="ticket-label">Appointment ID</span>
+                <span class="ticket-value" id="conf-code">#LMR-8829</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">Service</span>
+                <span class="ticket-value" id="conf-service">Cut &amp; Styling ($18 - $35)</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">Specialist</span>
+                <span class="ticket-value" id="conf-stylist">Lan Nguyen (Master Director)</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">Date &amp; Time</span>
+                <span class="ticket-value" id="conf-datetime">Saturday, July 5 at 2:00 PM</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">Guest Name</span>
+                <span class="ticket-value" id="conf-name">Ha Nguyen (090 123 4567)</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">Location</span>
+                <span class="ticket-value">86 Nguyen Trai, District 1, HCMC</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+              <a class="btn btn-primary" href="../index.html">← Back to Homepage</a>
+              <a class="btn btn-outline" href="services.html">Explore More Services</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-grid container">
+        <div>
+          <a class="brand" href="../index.html"><span class="brand-mark">L</span> Lumière</a>
+          <p class="footer-copy">
+            A thoughtful space for hair care and relaxation, created for women who value their own natural beauty.
+          </p>
+        </div>
+        <div>
+          <h3 class="footer-title">Explore</h3>
+          <div class="footer-links">
+            <a href="services.html">Services</a>
+            <a href="stylists.html">Our Stylists</a>
+            <a href="booking-flow.html">Booking</a>
+          </div>
+        </div>
+        <div>
+          <h3 class="footer-title">Connect</h3>
+          <div class="footer-links">
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="tel:02873008686">028 7300 8686</a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright container">
+        <span>© 2026 Lumière Hair &amp; Spa.</span>
+        <span>Thoughtfully designed in Saigon.</span>
+      </div>
+    </footer>
+
+    <script src="../assets/router.js"></script>
+    <script
+      src="https://widget.intern2026.zodinet.tech/ez-chat-widget.js"
+      data-site-id="ddbc694b-9205-4153-8e6e-43329101c506"
+    ></script>
+  </body>
+</html>

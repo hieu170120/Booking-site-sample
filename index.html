@@ -14,883 +14,14 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --ink: #2b211d;
-        --muted: #756b65;
-        --cream: #f8f3ed;
-        --white: #fffdfb;
-        --clay: #a8553a;
-        --clay-dark: #87422e;
-        --sage: #65756a;
-        --line: #e5dcd4;
-        --shadow: 0 20px 60px rgba(55, 36, 27, 0.12);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        margin: 0;
-        color: var(--ink);
-        background: var(--white);
-        font:
-          16px/1.6 "DM Sans",
-          sans-serif;
-      }
-      body.menu-open {
-        overflow: hidden;
-      }
-      img {
-        display: block;
-        max-width: 100%;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-      button {
-        font: inherit;
-      }
-      button {
-        cursor: pointer;
-      }
-      :focus-visible {
-        outline: 3px solid rgba(168, 85, 58, 0.35);
-        outline-offset: 3px;
-      }
-      .container {
-        width: min(1160px, calc(100% - 40px));
-        margin-inline: auto;
-      }
-      .eyebrow {
-        margin: 0 0 12px;
-        color: var(--clay);
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-      }
-      .section {
-        padding: 104px 0;
-      }
-      .section-title {
-        max-width: 600px;
-        margin: 0;
-        font:
-          600 clamp(2.15rem, 4vw, 3.6rem)/1.08 "Playfair Display",
-          serif;
-        letter-spacing: -0.035em;
-      }
-      .section-copy {
-        max-width: 550px;
-        margin: 18px 0 0;
-        color: var(--muted);
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 9px;
-        min-height: 50px;
-        padding: 0 24px;
-        border: 1px solid transparent;
-        border-radius: 999px;
-        font-weight: 700;
-        transition: 0.2s ease;
-      }
-      .btn:hover {
-        transform: translateY(-2px);
-      }
-      .btn-primary {
-        color: white;
-        background: var(--clay);
-        box-shadow: 0 10px 28px rgba(168, 85, 58, 0.24);
-      }
-      .btn-primary:hover {
-        background: var(--clay-dark);
-      }
-      .btn-outline {
-        border-color: rgba(43, 33, 29, 0.22);
-        background: rgba(255, 255, 255, 0.55);
-      }
-      .btn-outline:hover {
-        border-color: var(--ink);
-        background: white;
-      }
-
-      header {
-        position: fixed;
-        z-index: 20;
-        top: 0;
-        width: 100%;
-        border-bottom: 1px solid rgba(74, 53, 42, 0.09);
-        background: rgba(255, 253, 251, 0.88);
-        backdrop-filter: blur(16px);
-      }
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 76px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font:
-          600 1.35rem "Playfair Display",
-          serif;
-      }
-      .brand-mark {
-        display: grid;
-        place-items: center;
-        width: 35px;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        color: white;
-        background: var(--clay);
-        font:
-          italic 500 1.1rem "Playfair Display",
-          serif;
-      }
-      .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 34px;
-        font-size: 0.92rem;
-        font-weight: 600;
-      }
-      .nav-links a:not(.btn):hover {
-        color: var(--clay);
-      }
-      .menu-toggle {
-        display: none;
-        width: 44px;
-        height: 44px;
-        border: 0;
-        background: transparent;
-      }
-      .menu-toggle span {
-        display: block;
-        width: 23px;
-        height: 2px;
-        margin: 5px auto;
-        background: var(--ink);
-      }
-
-      .hero {
-        position: relative;
-        min-height: 760px;
-        padding-top: 76px;
-        overflow: hidden;
-        background: var(--cream);
-      }
-      .hero-image {
-        position: absolute;
-        inset: 76px 0 0;
-        width: 100%;
-        height: calc(100% - 76px);
-        object-fit: cover;
-        object-position: center;
-      }
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 76px 0 0;
-        background: linear-gradient(
-          90deg,
-          rgba(248, 243, 237, 0.97) 0%,
-          rgba(248, 243, 237, 0.92) 24%,
-          rgba(248, 243, 237, 0.34) 52%,
-          rgba(248, 243, 237, 0.02) 74%
-        );
-      }
-      .hero-content {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        min-height: 684px;
-      }
-      .hero-copy {
-        width: min(610px, 57%);
-        padding: 70px 0;
-      }
-      .hero h1 {
-        margin: 0;
-        font:
-          600 clamp(3.4rem, 6.6vw, 6.4rem)/0.96 "Playfair Display",
-          serif;
-        letter-spacing: -0.055em;
-      }
-      .hero h1 em {
-        display: block;
-        color: var(--clay);
-        font-weight: 500;
-      }
-      .hero-lead {
-        max-width: 520px;
-        margin: 25px 0 32px;
-        color: #5f544e;
-        font-size: 1.08rem;
-      }
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-      .hero-note {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 36px;
-        font-size: 0.9rem;
-      }
-      .avatars {
-        display: flex;
-      }
-      .avatar {
-        display: grid;
-        place-items: center;
-        width: 34px;
-        height: 34px;
-        margin-left: -8px;
-        border: 2px solid var(--cream);
-        border-radius: 50%;
-        color: white;
-        background: var(--sage);
-        font-size: 0.68rem;
-        font-weight: 700;
-      }
-      .avatar:first-child {
-        margin-left: 0;
-        background: var(--clay);
-      }
-      .avatar:last-child {
-        background: #b79577;
-      }
-      .stars {
-        color: #bd743f;
-        letter-spacing: 1px;
-      }
-
-      .trust {
-        border-block: 1px solid var(--line);
-        background: white;
-      }
-      .trust-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-      }
-      .trust-item {
-        padding: 25px 28px;
-        border-right: 1px solid var(--line);
-        text-align: center;
-      }
-      .trust-item:last-child {
-        border-right: 0;
-      }
-      .trust-item strong {
-        display: block;
-        font:
-          600 1.75rem "Playfair Display",
-          serif;
-      }
-      .trust-item span {
-        color: var(--muted);
-        font-size: 0.82rem;
-      }
-
-      .section-head {
-        display: flex;
-        align-items: end;
-        justify-content: space-between;
-        gap: 40px;
-        margin-bottom: 45px;
-      }
-      .service-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-      }
-      .service-card {
-        position: relative;
-        min-height: 340px;
-        padding: 32px;
-        border: 1px solid var(--line);
-        border-radius: 24px;
-        overflow: hidden;
-        background: var(--cream);
-        transition: 0.25s ease;
-      }
-      .service-card:hover {
-        transform: translateY(-5px);
-        border-color: #d8c6b9;
-        box-shadow: var(--shadow);
-      }
-      .service-card:nth-child(2) {
-        background: #edf0eb;
-      }
-      .service-card:nth-child(3) {
-        background: #f1e8e2;
-      }
-      .service-no {
-        color: var(--clay);
-        font-size: 0.74rem;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-      }
-      .service-card h3 {
-        max-width: 240px;
-        margin: 48px 0 12px;
-        font:
-          600 2rem/1.12 "Playfair Display",
-          serif;
-      }
-      .service-card p {
-        max-width: 280px;
-        margin: 0;
-        color: var(--muted);
-        font-size: 0.92rem;
-      }
-      .service-foot {
-        position: absolute;
-        right: 30px;
-        bottom: 28px;
-        left: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .price {
-        font-weight: 700;
-      }
-      .arrow {
-        display: grid;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        border: 1px solid rgba(43, 33, 29, 0.18);
-        border-radius: 50%;
-        font-size: 1.2rem;
-        transition: 0.2s;
-      }
-      .service-card:hover .arrow {
-        color: white;
-        border-color: var(--clay);
-        background: var(--clay);
-      }
-
-      .about {
-        overflow: hidden;
-        background: var(--ink);
-        color: white;
-      }
-      .about-grid {
-        display: grid;
-        grid-template-columns: 0.95fr 1.05fr;
-        align-items: center;
-        gap: 80px;
-      }
-      .about-visual {
-        position: relative;
-        min-height: 520px;
-      }
-      .about-photo {
-        position: absolute;
-        inset: 0 70px 60px 0;
-        border-radius: 140px 140px 24px 24px;
-        background: linear-gradient(145deg, #b97b58, #6a4b3b);
-      }
-      .about-photo::before {
-        content: "L";
-        position: absolute;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        color: rgba(255, 255, 255, 0.18);
-        font:
-          italic 500 15rem "Playfair Display",
-          serif;
-      }
-      .about-badge {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        display: grid;
-        place-items: center;
-        width: 180px;
-        aspect-ratio: 1;
-        padding: 30px;
-        border-radius: 50%;
-        color: var(--ink);
-        background: #d8b79f;
-        text-align: center;
-        font:
-          600 1.12rem/1.3 "Playfair Display",
-          serif;
-        transform: rotate(-7deg);
-      }
-      .about .section-title {
-        max-width: 520px;
-      }
-      .about .section-copy {
-        color: #bdb4af;
-      }
-      .feature-list {
-        display: grid;
-        gap: 16px;
-        margin: 32px 0 38px;
-        padding: 0;
-        list-style: none;
-      }
-      .feature-list li {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: #e8dfda;
-      }
-      .check {
-        display: grid;
-        flex: 0 0 auto;
-        place-items: center;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        color: white;
-        background: var(--clay);
-        font-size: 0.76rem;
-      }
-
-      .booking {
-        background: var(--cream);
-      }
-      .booking-grid {
-        display: grid;
-        grid-template-columns: 0.8fr 1.2fr;
-        gap: 70px;
-      }
-      .booking-aside {
-        padding-top: 18px;
-      }
-      .contact-list {
-        display: grid;
-        gap: 18px;
-        margin-top: 36px;
-      }
-      .contact-item {
-        display: flex;
-        gap: 14px;
-        color: var(--muted);
-      }
-      .contact-icon {
-        display: grid;
-        flex: 0 0 auto;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        color: var(--clay);
-        background: white;
-      }
-      .contact-item strong {
-        display: block;
-        color: var(--ink);
-        font-size: 0.9rem;
-      }
-      .booking-card {
-        max-width: 480px;
-        width: 100%;
-        margin-inline: auto;
-        border: 1px solid #d9e0ec;
-        border-radius: 28px;
-        overflow: hidden;
-        background: #f7f9fc;
-        box-shadow: var(--shadow);
-        pointer-events: none;
-        user-select: none;
-      }
-      .widget-head {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 16px 18px;
-        color: white;
-        background: var(--clay);
-      }
-      .widget-bot {
-        display: grid;
-        place-items: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.18);
-        font-size: 1.15rem;
-      }
-      .widget-head strong {
-        display: block;
-        font-size: 0.95rem;
-        line-height: 1.2;
-      }
-      .widget-status {
-        color: #dce7ff;
-        font-size: 0.75rem;
-      }
-      .widget-status::before {
-        content: "";
-        display: inline-block;
-        width: 7px;
-        height: 7px;
-        margin-right: 5px;
-        border-radius: 50%;
-        background: #6af0a7;
-      }
-      .widget-refresh {
-        margin-left: auto;
-        font-size: 1.3rem;
-      }
-      .widget-body {
-        min-height: 510px;
-        padding: 20px 18px;
-        color: #34415a;
-        background: #f7f9fc;
-      }
-      .chat-row {
-        display: flex;
-        align-items: flex-end;
-        gap: 9px;
-        margin: 13px 0;
-      }
-      .chat-row.user {
-        justify-content: flex-end;
-      }
-      .chat-avatar {
-        display: grid;
-        flex: 0 0 auto;
-        place-items: center;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        color: white;
-        background: var(--clay);
-        font-size: 0.8rem;
-      }
-      .bubble {
-        max-width: 80%;
-        padding: 12px 15px;
-        border: 1px solid #e3e7ef;
-        border-radius: 10px 18px 18px;
-        background: white;
-        box-shadow: 0 2px 5px rgba(38, 57, 89, 0.06);
-        font-size: 0.9rem;
-        line-height: 1.45;
-      }
-      .user .bubble {
-        color: white;
-        border: 0;
-        border-radius: 18px 10px 18px 18px;
-        background: var(--clay);
-      }
-      .widget-date {
-        margin: 0 0 16px 37px;
-        color: #8c9ab5;
-        font-size: 0.74rem;
-      }
-      .time-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 9px;
-        margin: 0 0 10px 37px;
-      }
-      .time-slot {
-        padding: 10px 12px;
-        border: 1px solid #dce2ed;
-        border-radius: 12px;
-        background: white;
-      }
-      .time-slot strong {
-        display: block;
-        color: #1e2d47;
-        line-height: 1.1;
-      }
-      .time-slot span {
-        color: #8ea0bd;
-        font-size: 0.72rem;
-      }
-      .time-slot.selected {
-        position: relative;
-        color: white;
-        border-color: var(--clay);
-        background: var(--clay);
-      }
-      .time-slot.selected strong,
-      .time-slot.selected span {
-        color: white;
-      }
-      .time-slot.selected::after {
-        content: "✓";
-        position: absolute;
-        top: 8px;
-        right: 10px;
-      }
-      .timezone {
-        margin-left: 37px;
-        color: #93a2bb;
-        font-size: 0.7rem;
-      }
-      .widget-input {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 12px;
-        padding: 10px 11px 10px 18px;
-        border: 1px solid #e1e6ef;
-        border-radius: 999px;
-        color: #9ba8bd;
-        background: white;
-        font-size: 0.85rem;
-      }
-      .send-icon {
-        display: grid;
-        place-items: center;
-        width: 34px;
-        height: 34px;
-        margin-left: auto;
-        border-radius: 50%;
-        color: white;
-        background: var(--clay);
-      }
-      .demo-note {
-        margin: 14px 0 0;
-        color: var(--muted);
-        text-align: center;
-        font-size: 0.8rem;
-      }
-
-      .testimonial {
-        text-align: center;
-      }
-      .quote-mark {
-        color: #d5b29d;
-        font:
-          600 5rem/0.7 "Playfair Display",
-          serif;
-      }
-      blockquote {
-        max-width: 850px;
-        margin: 28px auto;
-        font:
-          500 clamp(1.6rem, 3.3vw, 2.7rem)/1.35 "Playfair Display",
-          serif;
-      }
-      .reviewer {
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-      .reviewer strong {
-        color: var(--ink);
-      }
-
-      footer {
-        padding: 60px 0 26px;
-        color: #cfc6c1;
-        background: var(--ink);
-      }
-      .footer-grid {
-        display: grid;
-        grid-template-columns: 1.4fr 0.8fr 0.8fr;
-        gap: 70px;
-        padding-bottom: 48px;
-      }
-      footer .brand {
-        color: white;
-      }
-      .footer-copy {
-        max-width: 370px;
-        margin: 18px 0 0;
-        font-size: 0.9rem;
-      }
-      .footer-title {
-        margin: 0 0 16px;
-        color: white;
-        font-size: 0.86rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-      .footer-links {
-        display: grid;
-        gap: 9px;
-        font-size: 0.9rem;
-      }
-      .footer-links a:hover {
-        color: white;
-      }
-      .copyright {
-        display: flex;
-        justify-content: space-between;
-        gap: 30px;
-        padding-top: 24px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 0.78rem;
-      }
-
-      @media (max-width: 900px) {
-        .nav-links {
-          position: fixed;
-          inset: 76px 0 auto;
-          display: none;
-          padding: 28px 20px 34px;
-          border-bottom: 1px solid var(--line);
-          background: var(--white);
-          flex-direction: column;
-          align-items: stretch;
-          text-align: center;
-        }
-        .nav-links.open {
-          display: flex;
-        }
-        .menu-toggle {
-          display: block;
-        }
-        .hero {
-          min-height: 710px;
-        }
-        .hero::after {
-          background: linear-gradient(
-            90deg,
-            rgba(248, 243, 237, 0.97),
-            rgba(248, 243, 237, 0.76) 64%,
-            rgba(248, 243, 237, 0.22)
-          );
-        }
-        .hero-image {
-          object-position: 64% center;
-        }
-        .hero-copy {
-          width: 76%;
-        }
-        .trust-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .trust-item:nth-child(2) {
-          border-right: 0;
-        }
-        .trust-item:nth-child(-n + 2) {
-          border-bottom: 1px solid var(--line);
-        }
-        .service-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .service-card:last-child {
-          grid-column: 1 / -1;
-        }
-        .about-grid,
-        .booking-grid {
-          grid-template-columns: 1fr;
-          gap: 50px;
-        }
-        .about-visual {
-          min-height: 440px;
-        }
-        .footer-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .footer-grid > div:first-child {
-          grid-column: 1 / -1;
-        }
-      }
-
-      @media (max-width: 600px) {
-        .container {
-          width: min(100% - 28px, 1160px);
-        }
-        .section {
-          padding: 78px 0;
-        }
-        .hero {
-          min-height: 760px;
-        }
-        .hero-image {
-          object-position: 69% center;
-          opacity: 0.55;
-        }
-        .hero::after {
-          background: linear-gradient(
-            90deg,
-            rgba(248, 243, 237, 0.98),
-            rgba(248, 243, 237, 0.62)
-          );
-        }
-        .hero-copy {
-          width: 100%;
-          padding-bottom: 40px;
-        }
-        .hero h1 {
-          font-size: clamp(3.15rem, 16vw, 4.6rem);
-        }
-        .hero-lead {
-          max-width: 94%;
-        }
-        .hero-actions .btn {
-          width: 100%;
-        }
-        .trust-item {
-          padding: 20px 10px;
-        }
-        .section-head {
-          align-items: start;
-          margin-bottom: 32px;
-          flex-direction: column;
-        }
-        .service-grid {
-          grid-template-columns: 1fr;
-        }
-        .service-card:last-child {
-          grid-column: auto;
-        }
-        .about-visual {
-          min-height: 360px;
-        }
-        .about-photo {
-          right: 35px;
-          bottom: 35px;
-        }
-        .about-badge {
-          width: 125px;
-          padding: 20px;
-          font-size: 0.9rem;
-        }
-        .booking-card {
-          max-width: 440px;
-        }
-        .widget-body {
-          min-height: 480px;
-          padding-inline: 12px;
-        }
-        .footer-grid {
-          grid-template-columns: 1fr;
-          gap: 35px;
-        }
-        .footer-grid > div:first-child {
-          grid-column: auto;
-        }
-        .copyright {
-          flex-direction: column;
-          gap: 6px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="assets/styles.css" />
   </head>
   <body>
     <header>
       <nav class="nav container" aria-label="Main navigation">
-        <a class="brand" href="#top" aria-label="Lumière home"
-          ><span class="brand-mark">L</span> Lumière</a
-        >
+        <a class="brand" href="index.html" aria-label="Lumière home">
+          <span class="brand-mark">L</span> Lumière
+        </a>
         <button
           class="menu-toggle"
           type="button"
@@ -900,15 +31,16 @@
           <span></span><span></span><span></span>
         </button>
         <div class="nav-links">
-          <a href="#services">Services</a>
+          <a href="preview/services.html">Services</a>
+          <a href="preview/stylists.html">Stylists</a>
           <a href="#story">Our story</a>
           <a href="#contact">Contact</a>
-          <a class="btn btn-primary" href="#booking">Book now</a>
+          <a class="btn btn-primary" href="preview/booking-flow.html">Book now</a>
         </div>
       </nav>
     </header>
 
-    <main id="top">
+    <main id="app-main">
       <section class="hero">
         <img
           class="hero-image"
@@ -926,20 +58,21 @@
               your lifestyle, and the way you want to feel.
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#booking"
-                >Book your visit <span aria-hidden="true">→</span></a
-              >
-              <a class="btn btn-outline" href="#services">Explore services</a>
+              <a class="btn btn-primary" href="preview/booking-flow.html">
+                Book your visit <span aria-hidden="true">→</span>
+              </a>
+              <a class="btn btn-outline" href="preview/services.html">Explore services</a>
             </div>
             <div class="hero-note">
               <div class="avatars" aria-hidden="true">
-                <span class="avatar">AN</span><span class="avatar">MY</span
-                ><span class="avatar">TH</span>
+                <span class="avatar">AN</span>
+                <span class="avatar">MY</span>
+                <span class="avatar">TH</span>
               </div>
-              <span
-                ><span class="stars" aria-label="5 stars">★★★★★</span
-                ><br />Trusted by more than 1,200 clients</span
-              >
+              <span>
+                <span class="stars" aria-label="5 stars">★★★★★</span><br />
+                Trusted by more than 1,200 clients
+              </span>
             </div>
           </div>
         </div>
@@ -975,7 +108,7 @@
             </p>
           </div>
           <div class="service-grid">
-            <a class="service-card" href="#booking">
+            <a class="service-card" href="preview/cut-styling.html">
               <span class="service-no">01 · HAIR CUT</span>
               <h3>Cut &amp; styling</h3>
               <p>
@@ -983,11 +116,11 @@
                 texture, and everyday style.
               </p>
               <div class="service-foot">
-                <span class="price">From $18</span
-                ><span class="arrow" aria-hidden="true">↗</span>
+                <span class="price">From $18</span>
+                <span class="arrow" aria-hidden="true">↗</span>
               </div>
             </a>
-            <a class="service-card" href="#booking">
+            <a class="service-card" href="preview/signature-color.html">
               <span class="service-no">02 · HAIR COLOR</span>
               <h3>Signature color</h3>
               <p>
@@ -995,11 +128,11 @@
                 that protect your hair.
               </p>
               <div class="service-foot">
-                <span class="price">From $39</span
-                ><span class="arrow" aria-hidden="true">↗</span>
+                <span class="price">From $39</span>
+                <span class="arrow" aria-hidden="true">↗</span>
               </div>
             </a>
-            <a class="service-card" href="#booking">
+            <a class="service-card" href="preview/deep-restoration.html">
               <span class="service-no">03 · HAIR CARE</span>
               <h3>Deep restoration</h3>
               <p>
@@ -1007,9 +140,14 @@
                 from within.
               </p>
               <div class="service-foot">
-                <span class="price">From $27</span
-                ><span class="arrow" aria-hidden="true">↗</span>
+                <span class="price">From $27</span>
+                <span class="arrow" aria-hidden="true">↗</span>
               </div>
+            </a>
+          </div>
+          <div style="text-align: center; margin-top: 40px;">
+            <a class="btn btn-outline" href="preview/services.html">
+              View All Services &amp; Full Price Table →
             </a>
           </div>
         </div>
@@ -1042,7 +180,7 @@
                 <span class="check">✓</span> Seven-day color and style guarantee
               </li>
             </ul>
-            <a class="btn btn-primary" href="#booking">Meet our experts</a>
+            <a class="btn btn-primary" href="preview/stylists.html">Meet our experts</a>
           </div>
         </div>
       </section>
@@ -1060,23 +198,26 @@
             </p>
             <div class="contact-list" id="contact">
               <div class="contact-item">
-                <span class="contact-icon" aria-hidden="true">⌖</span
-                ><span
-                  ><strong>Address</strong>86 Nguyen Trai, District 1, Ho Chi
-                  Minh City</span
-                >
+                <span class="contact-icon" aria-hidden="true">⌖</span>
+                <span>
+                  <strong>Address</strong>86 Nguyen Trai, District 1, Ho Chi Minh City
+                </span>
               </div>
               <div class="contact-item">
-                <span class="contact-icon" aria-hidden="true">⌕</span
-                ><span
-                  ><strong>Opening hours</strong>9:00 AM — 8:30 PM · Monday to
-                  Sunday</span
-                >
+                <span class="contact-icon" aria-hidden="true">⌕</span>
+                <span>
+                  <strong>Opening hours</strong>9:00 AM — 8:30 PM · Monday to Sunday
+                </span>
               </div>
               <div class="contact-item">
-                <span class="contact-icon" aria-hidden="true">☎</span
-                ><span><strong>Hotline</strong>028 7300 8686</span>
+                <span class="contact-icon" aria-hidden="true">☎</span>
+                <span><strong>Hotline</strong>028 7300 8686</span>
               </div>
+            </div>
+            <div style="margin-top: 32px;">
+              <a class="btn btn-primary" href="preview/booking-flow.html">
+                Open Online Booking Form →
+              </a>
             </div>
           </div>
 
@@ -1088,12 +229,10 @@
             >
               <div class="widget-head">
                 <span class="widget-bot" aria-hidden="true">♙</span>
-                <span
-                  ><strong>Beauty Salon Assistant</strong
-                  ><span class="widget-status"
-                    >Online · powered by ez-chat-bot</span
-                  ></span
-                >
+                <span>
+                  <strong>Beauty Salon Assistant</strong>
+                  <span class="widget-status">Online · powered by ez-chat-bot</span>
+                </span>
                 <span class="widget-refresh" aria-hidden="true">↻</span>
               </div>
               <div class="widget-body">
@@ -1172,9 +311,9 @@
     <footer>
       <div class="footer-grid container">
         <div>
-          <a class="brand" href="#top"
-            ><span class="brand-mark">L</span> Lumière</a
-          >
+          <a class="brand" href="index.html">
+            <span class="brand-mark">L</span> Lumière
+          </a>
           <p class="footer-copy">
             A thoughtful space for hair care and relaxation, created for women
             who value their own natural beauty.
@@ -1183,42 +322,33 @@
         <div>
           <h3 class="footer-title">Explore</h3>
           <div class="footer-links">
-            <a href="#services">Services</a><a href="#story">Our story</a
-            ><a href="#booking">Booking</a>
+            <a href="preview/services.html">Services</a>
+            <a href="preview/stylists.html">Our Stylists</a>
+            <a href="preview/booking-flow.html">Booking</a>
           </div>
         </div>
         <div>
           <h3 class="footer-title">Connect</h3>
           <div class="footer-links">
-            <a href="#">Instagram</a><a href="#">Facebook</a
-            ><a href="tel:02873008686">028 7300 8686</a>
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="tel:02873008686">028 7300 8686</a>
           </div>
         </div>
       </div>
       <div class="copyright container">
-        <span>© 2026 Lumière Hair &amp; Spa.</span
-        ><span>Thoughtfully designed in Saigon.</span>
+        <span>© 2026 Lumière Hair &amp; Spa.</span>
+        <span>Thoughtfully designed in Saigon.</span>
       </div>
     </footer>
 
-    <!-- Paste the live chat widget embed code here, immediately before the closing body tag. -->
-    <script>
-      const menu = document.querySelector(".nav-links");
-      const toggle = document.querySelector(".menu-toggle");
-      toggle.addEventListener("click", () => {
-        const open = menu.classList.toggle("open");
-        toggle.setAttribute("aria-expanded", open);
-        document.body.classList.toggle("menu-open", open);
-      });
-      menu.addEventListener("click", (event) => {
-        if (event.target.closest("a")) {
-          menu.classList.remove("open");
-          toggle.setAttribute("aria-expanded", "false");
-          document.body.classList.remove("menu-open");
-        }
-      });
-    </script>
-    <script src="https://widget.intern2026.zodinet.tech/ez-chat-widget.js"
-    data-site-id="ddbc694b-9205-4153-8e6e-43329101c506"></script>
+    <!-- Mini SPA Router: seamlessly handles subpage navigation without refreshing or resetting the chat widget -->
+    <script src="assets/router.js"></script>
+
+    <!-- ez-chat-widget script: loaded ONCE here, remains active across all subpages -->
+    <script
+      src="https://widget.intern2026.zodinet.tech/ez-chat-widget.js"
+      data-site-id="ddbc694b-9205-4153-8e6e-43329101c506"
+    ></script>
   </body>
 </html>
