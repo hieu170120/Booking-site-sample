@@ -5,21 +5,14 @@
 (function () {
   // Determine site root dynamically (works on Vercel "/", GitHub Pages "/repo/", or local subfolders)
   function getAppRoot() {
-    const scripts = document.querySelectorAll('script[src*="router.js"]');
-    for (let script of scripts) {
-      const src = script.getAttribute("src");
-      if (src) {
-        const scriptUrl = new URL(src, window.location.href);
-        const idx = scriptUrl.pathname.indexOf("/assets/router.js");
-        if (idx !== -1) {
-          return scriptUrl.pathname.substring(0, idx + 1);
-        }
-      }
+    const pathname = window.location.pathname;
+    const previewIdx = pathname.indexOf("/preview/");
+    if (previewIdx !== -1) {
+      return pathname.substring(0, previewIdx + 1);
     }
-    // Fallback: check if we are in /preview/ subfolder
-    if (window.location.pathname.includes("/preview/")) {
-      const rootPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/preview/") + 1);
-      return rootPath;
+    const lastSlash = pathname.lastIndexOf("/");
+    if (lastSlash !== -1) {
+      return pathname.substring(0, lastSlash + 1);
     }
     return "/";
   }
@@ -39,13 +32,14 @@
     const appRoot = getAppRoot();
     const origin = window.location.origin;
 
-    // Handle hash links
+    // Handle hash links (e.g. #story, #contact)
     if (href.startsWith("#")) {
-      const isHome = window.location.pathname.endsWith("index.html") || 
-                     window.location.pathname.endsWith(appRoot) || 
-                     !window.location.pathname.includes("/preview/");
+      const pathname = window.location.pathname;
+      const isHome = pathname === appRoot || 
+                     pathname === appRoot + "index.html" || 
+                     !pathname.includes("/preview/");
       if (isHome) {
-        return href; // Keep hash
+        return href; // Keep hash for in-page smooth scroll
       } else {
         return origin + appRoot + "index.html" + href;
       }
@@ -56,34 +50,27 @@
     const basePart = urlParts[0].split("?")[0];
     const hash = urlParts.length > 1 ? "#" + urlParts[1] : "";
 
-    if (basePart.endsWith("index.html") || basePart === "/" || basePart === "./" || basePart === "") {
+    // Extract pure filename
+    const filename = basePart.substring(basePart.lastIndexOf("/") + 1) || "index.html";
+
+    if (filename === "index.html" || filename === "") {
       return origin + appRoot + "index.html" + hash;
     }
-    if (basePart.includes("services.html")) {
-      return origin + appRoot + "preview/services.html" + hash;
-    }
-    if (basePart.includes("cut-styling.html")) {
-      return origin + appRoot + "preview/cut-styling.html" + hash;
-    }
-    if (basePart.includes("signature-color.html")) {
-      return origin + appRoot + "preview/signature-color.html" + hash;
-    }
-    if (basePart.includes("deep-restoration.html")) {
-      return origin + appRoot + "preview/deep-restoration.html" + hash;
-    }
-    if (basePart.includes("stylists.html")) {
-      return origin + appRoot + "preview/stylists.html" + hash;
-    }
-    if (basePart.includes("booking-flow.html")) {
-      return origin + appRoot + "preview/booking-flow.html" + hash;
-    }
-    if (basePart.includes("booking-confirmed.html")) {
-      return origin + appRoot + "preview/booking-confirmed.html" + hash;
+    if (
+      filename === "services.html" ||
+      filename === "cut-styling.html" ||
+      filename === "signature-color.html" ||
+      filename === "deep-restoration.html" ||
+      filename === "stylists.html" ||
+      filename === "booking-flow.html" ||
+      filename === "booking-confirmed.html"
+    ) {
+      return origin + appRoot + "preview/" + filename + hash;
     }
 
     // Default URL resolution
     try {
-      return new URL(href, window.location.href).href;
+      return new URL(href, origin + appRoot).href;
     } catch (e) {
       return href;
     }
