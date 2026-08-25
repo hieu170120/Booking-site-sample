@@ -42,15 +42,18 @@
 
     <main id="app-main">
       <section class="hero">
-        <img
-          class="hero-image"
-          src="assets/salon-hero.png"
-          alt="A Lumière stylist caring for a client's hair"
-          width="1792"
-          height="921"
-          loading="eager"
-          decoding="async"
-        />
+        <picture>
+          <source srcset="assets/salon-hero.webp" type="image/webp" />
+          <img
+            class="hero-image"
+            src="assets/salon-hero.jpg"
+            alt="A Lumière stylist caring for a client's hair"
+            width="1792"
+            height="921"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
         <div class="hero-content container">
           <div class="hero-copy">
             <p class="eyebrow">Hair salon &amp; wellness</p>
@@ -159,12 +162,15 @@
         <div class="about-grid container">
           <div class="about-visual" aria-hidden="true">
             <div class="about-photo">
-              <img
-                src="assets/salon-story.jpg"
-                alt="Lumière stylist at work in the salon"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source srcset="assets/salon-story.webp" type="image/webp" />
+                <img
+                  src="assets/salon-story.jpg"
+                  alt="Lumière stylist at work in the salon"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <div class="about-badge">Beauty begins with understanding</div>
           </div>
