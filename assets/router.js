@@ -1,8 +1,94 @@
 /**
  * Mini Client-Side SPA Router for Lumière Hair & Spa
- * Keeps ez-chat-widget alive across all page navigations.
+ * Keeps ez-chat-widget alive across all page navigations and resolves routes accurately.
  */
 (function () {
+  // Determine site root dynamically (works on Vercel "/", GitHub Pages "/repo/", or local subfolders)
+  function getAppRoot() {
+    const scripts = document.querySelectorAll('script[src*="router.js"]');
+    for (let script of scripts) {
+      const src = script.getAttribute("src");
+      if (src) {
+        const scriptUrl = new URL(src, window.location.href);
+        const idx = scriptUrl.pathname.indexOf("/assets/router.js");
+        if (idx !== -1) {
+          return scriptUrl.pathname.substring(0, idx + 1);
+        }
+      }
+    }
+    // Fallback: check if we are in /preview/ subfolder
+    if (window.location.pathname.includes("/preview/")) {
+      const rootPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/preview/") + 1);
+      return rootPath;
+    }
+    return "/";
+  }
+
+  function resolveRoute(href) {
+    if (!href) return "";
+    if (
+      href.startsWith("http://") ||
+      href.startsWith("https://") ||
+      href.startsWith("mailto:") ||
+      href.startsWith("tel:") ||
+      href.startsWith("//")
+    ) {
+      return href;
+    }
+
+    const appRoot = getAppRoot();
+    const origin = window.location.origin;
+
+    // Handle hash links
+    if (href.startsWith("#")) {
+      const isHome = window.location.pathname.endsWith("index.html") || 
+                     window.location.pathname.endsWith(appRoot) || 
+                     !window.location.pathname.includes("/preview/");
+      if (isHome) {
+        return href; // Keep hash
+      } else {
+        return origin + appRoot + "index.html" + href;
+      }
+    }
+
+    // Strip existing queries/hashes for clean matching
+    const urlParts = href.split("#");
+    const basePart = urlParts[0].split("?")[0];
+    const hash = urlParts.length > 1 ? "#" + urlParts[1] : "";
+
+    if (basePart.endsWith("index.html") || basePart === "/" || basePart === "./" || basePart === "") {
+      return origin + appRoot + "index.html" + hash;
+    }
+    if (basePart.includes("services.html")) {
+      return origin + appRoot + "preview/services.html" + hash;
+    }
+    if (basePart.includes("cut-styling.html")) {
+      return origin + appRoot + "preview/cut-styling.html" + hash;
+    }
+    if (basePart.includes("signature-color.html")) {
+      return origin + appRoot + "preview/signature-color.html" + hash;
+    }
+    if (basePart.includes("deep-restoration.html")) {
+      return origin + appRoot + "preview/deep-restoration.html" + hash;
+    }
+    if (basePart.includes("stylists.html")) {
+      return origin + appRoot + "preview/stylists.html" + hash;
+    }
+    if (basePart.includes("booking-flow.html")) {
+      return origin + appRoot + "preview/booking-flow.html" + hash;
+    }
+    if (basePart.includes("booking-confirmed.html")) {
+      return origin + appRoot + "preview/booking-confirmed.html" + hash;
+    }
+
+    // Default URL resolution
+    try {
+      return new URL(href, window.location.href).href;
+    } catch (e) {
+      return href;
+    }
+  }
+
   const loadingBar = document.getElementById("spa-loading-bar") || createLoadingBar();
 
   function createLoadingBar() {
@@ -23,26 +109,27 @@
     }, 300);
   }
 
-  function updateActiveNav(targetPath) {
+  function updateActiveNav() {
+    const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll(".nav-links a");
     navLinks.forEach((a) => {
-      const href = a.getAttribute("href");
-      if (!href) return;
-      if (href.startsWith("#")) {
+      const resolved = resolveRoute(a.getAttribute("href"));
+      if (!resolved || resolved.startsWith("#")) {
         a.classList.remove("active");
         return;
       }
-      // Check relative match
-      const url = new URL(a.href, window.location.href);
-      if (url.pathname === window.location.pathname) {
-        a.classList.add("active");
-      } else {
-        a.classList.remove("active");
-      }
+      try {
+        const u = new URL(resolved);
+        if (u.pathname === currentPath || (currentPath.endsWith("/") && u.pathname.endsWith("/index.html"))) {
+          a.classList.add("active");
+        } else {
+          a.classList.remove("active");
+        }
+      } catch (e) {}
     });
   }
 
-  // Intercept click on links
+  // Intercept clicks on links
   document.addEventListener("click", (e) => {
     const link = e.target.closest("a");
     if (!link) return;
@@ -50,7 +137,7 @@
     const href = link.getAttribute("href");
     if (!href) return;
 
-    // Ignore external links, mailto, tel, pure hashes
+    // External or special protocols
     if (
       href.startsWith("http://") ||
       href.startsWith("https://") ||
@@ -62,31 +149,31 @@
       return;
     }
 
-    // If it's a hash on the current page
-    if (href.startsWith("#")) {
-      // If we are not on index.html/root, navigate to index.html with hash
-      const isRoot = window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/");
-      if (!isRoot) {
+    const resolved = resolveRoute(href);
+
+    // If pure hash on current page
+    if (resolved.startsWith("#")) {
+      const el = document.querySelector(resolved);
+      if (el) {
         e.preventDefault();
-        const rootUrl = new URL("../index.html" + href, window.location.href);
-        navigateTo(rootUrl.href, true, href);
+        el.scrollIntoView({ behavior: "smooth" });
       }
       return;
     }
 
-    // Internal navigation
     e.preventDefault();
-    const destination = new URL(href, window.location.href).href;
-    if (destination !== window.location.href) {
-      navigateTo(destination, true);
+    if (resolved !== window.location.href) {
+      const hash = resolved.includes("#") ? "#" + resolved.split("#")[1] : null;
+      navigateTo(resolved, true, hash);
     }
   });
 
   async function navigateTo(url, push = true, scrollHash = null) {
     startLoading();
     try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Failed to load page " + url);
+      const fetchUrl = url.split("#")[0];
+      const response = await fetch(fetchUrl);
+      if (!response.ok) throw new Error("Status " + response.status + " fetching " + fetchUrl);
 
       const html = await response.text();
       const parser = new DOMParser();
@@ -99,51 +186,48 @@
         currentMain.innerHTML = newMain.innerHTML;
         currentMain.id = newMain.id || "app-main";
         currentMain.className = newMain.className || "";
+
+        // Fix relative image paths in injected content
+        const appRoot = getAppRoot();
+        const origin = window.location.origin;
+        currentMain.querySelectorAll('img[src^="assets/"]').forEach((img) => {
+          img.src = origin + appRoot + img.getAttribute("src");
+        });
       } else {
         window.location.href = url;
         return;
       }
 
-      // Update title
       if (doc.title) {
         document.title = doc.title;
       }
 
-      // Update URL in browser history
       if (push) {
         history.pushState({ url }, doc.title, url);
       }
 
-      // Update active nav
-      updateActiveNav(url);
-
-      // Re-init interactive components on the new page
+      updateActiveNav();
       initPageInteractions();
 
-      // Scroll to hash or top
       if (scrollHash) {
-        const targetEl = document.querySelector(scrollHash);
-        if (targetEl) {
-          targetEl.scrollIntoView({ behavior: "smooth" });
-        } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+        setTimeout(() => {
+          const targetEl = document.querySelector(scrollHash);
+          if (targetEl) targetEl.scrollIntoView({ behavior: "smooth" });
+        }, 50);
       } else {
         window.scrollTo({ top: 0, behavior: "instant" });
       }
 
-      // Dispatch custom location change event in case chat widget listens to URL changes
       window.dispatchEvent(new Event("popstate"));
       window.dispatchEvent(new CustomEvent("pagechange", { detail: { url } }));
     } catch (err) {
-      console.warn("SPA router fallback to full navigation:", err);
+      console.warn("SPA Navigation fallback:", err);
       window.location.href = url;
     } finally {
       finishLoading();
     }
   }
 
-  // Handle browser Back/Forward buttons
   window.addEventListener("popstate", () => {
     navigateTo(window.location.href, false);
   });
@@ -167,7 +251,7 @@
       };
     }
 
-    // Interactive booking form preview (if present)
+    // Interactive booking form preview
     const bookingForm = document.getElementById("preview-booking-form");
     if (bookingForm) {
       bookingForm.onsubmit = (e) => {
@@ -179,18 +263,25 @@
         const name = document.getElementById("book-name")?.value || "Ha Nguyen";
         const phone = document.getElementById("book-phone")?.value || "0901234567";
 
-        // Pass details via sessionStorage or URL params
         sessionStorage.setItem(
           "latest_booking",
-          JSON.stringify({ service, stylist, date, time, name, phone, id: "LMR-" + Math.floor(1000 + Math.random() * 9000) })
+          JSON.stringify({
+            service,
+            stylist,
+            date,
+            time,
+            name,
+            phone,
+            id: "LMR-" + Math.floor(1000 + Math.random() * 9000),
+          })
         );
 
-        const confirmUrl = new URL("booking-confirmed.html", window.location.href).href;
+        const confirmUrl = resolveRoute("preview/booking-confirmed.html");
         navigateTo(confirmUrl, true);
       };
     }
 
-    // Populate confirmation data if on booking-confirmed page
+    // Populate confirmation data
     const confirmContainer = document.getElementById("confirmed-details");
     if (confirmContainer) {
       const stored = sessionStorage.getItem("latest_booking");
@@ -212,9 +303,8 @@
     }
   }
 
-  // Initial run
   document.addEventListener("DOMContentLoaded", () => {
     initPageInteractions();
-    updateActiveNav(window.location.href);
+    updateActiveNav();
   });
 })();
