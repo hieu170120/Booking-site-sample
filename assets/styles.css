@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 html {
-  scroll-behavior: smooth;
+  /* smooth scroll removed: causes jank on mobile/Vercel; router handles scrolling */
 }
 body {
   margin: 0;
@@ -120,8 +120,11 @@ header {
   top: 0;
   width: 100%;
   border-bottom: 1px solid rgba(74, 53, 42, 0.09);
-  background: rgba(255, 253, 251, 0.92);
-  backdrop-filter: blur(16px);
+  background: rgba(255, 253, 251, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  will-change: transform;
+  contain: layout style;
 }
 .nav {
   display: flex;
@@ -317,9 +320,11 @@ header {
   border-radius: 24px;
   overflow: hidden;
   background: var(--cream);
-  transition: 0.25s ease;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
   display: flex;
   flex-direction: column;
+  will-change: transform;
+  contain: layout;
 }
 .service-card:hover {
   transform: translateY(-5px);
@@ -394,16 +399,15 @@ header {
   position: absolute;
   inset: 0 70px 60px 0;
   border-radius: 140px 140px 24px 24px;
+  overflow: hidden;
   background: linear-gradient(145deg, #b97b58, #6a4b3b);
 }
-.about-photo::before {
-  content: "L";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: rgba(255, 255, 255, 0.18);
-  font: italic 500 15rem "Playfair Display", serif;
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 .about-badge {
   position: absolute;
@@ -945,9 +949,11 @@ footer .brand {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   display: flex;
   flex-direction: column;
+  will-change: transform;
+  contain: layout;
 }
 .stylist-card:hover {
   transform: translateY(-6px);
@@ -1189,6 +1195,81 @@ footer .brand {
 #spa-loading-bar.done {
   width: 100%;
   opacity: 0;
+}
+
+/* ============================================================
+   CONTACT SECTION (standalone)
+   ============================================================ */
+.contact-section {
+  background: var(--white);
+  padding: 104px 0;
+}
+.contact-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 70px;
+  align-items: start;
+}
+.contact-form-card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 36px;
+}
+.contact-form-card h3 {
+  font: 600 1.6rem "Playfair Display", serif;
+  margin: 0 0 24px;
+}
+.contact-info-block {
+  display: grid;
+  gap: 24px;
+}
+.contact-info-item {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.contact-info-icon {
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+}
+.contact-info-text strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: var(--ink);
+}
+.contact-info-text span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.map-embed {
+  margin-top: 32px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.map-embed iframe {
+  display: block;
+  width: 100%;
+  height: 260px;
+  border: 0;
+}
+@media (max-width: 900px) {
+  .contact-section-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
 }
 
 /* Responsive */
