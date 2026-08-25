@@ -155,7 +155,11 @@
     }
   });
 
+  let isNavigating = false;
+
   async function navigateTo(url, push = true, scrollHash = null) {
+    if (isNavigating) return;
+    isNavigating = true;
     startLoading();
     try {
       const fetchUrl = url.split("#")[0];
@@ -205,18 +209,19 @@
         window.scrollTo({ top: 0, behavior: "instant" });
       }
 
-      window.dispatchEvent(new Event("popstate"));
       window.dispatchEvent(new CustomEvent("pagechange", { detail: { url } }));
     } catch (err) {
       console.warn("SPA Navigation fallback:", err);
       window.location.href = url;
     } finally {
       finishLoading();
+      isNavigating = false;
     }
   }
 
-  window.addEventListener("popstate", () => {
-    navigateTo(window.location.href, false);
+  window.addEventListener("popstate", (e) => {
+    const targetUrl = (e.state && e.state.url) ? e.state.url : window.location.href;
+    navigateTo(targetUrl, false);
   });
 
   function initPageInteractions() {
